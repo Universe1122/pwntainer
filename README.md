@@ -22,11 +22,11 @@ It is slower because it uses QEMU to [emulate the entire VM in x86_64](https://l
 Here's the command to install and set everything:
 ```sh
 brew install docker
-brew install colima
+brew install colima lima qemu lima-additional-guestagents
 brew install docker-buildx
 colima start -p x64 -a x86_64 -c 8 -m 4 -d 10 --vm-type qemu
-docker-buildx -t pwn:pwn .
-docker run --security-opt seccomp=unconfined --privileged --cap-add=SYS_PTRACE -p 31337:31337 -v ./:/pwn -it pwn:pwn bash
+docker buildx -t pwn:pwn .
+docker run -it -d -p 23946:23946 --cap-add=SYS_PTRACE --security-opt seccomp=unconfined --security-opt apparmor-unconfined -v ./workspace:/pwn/workspace [빌드된image_hash] /bin/bash
 ```
 
 Modified from [ScarletFireLabs](https://github.com/scarletfirelabs/docker-binaryexploitation).
